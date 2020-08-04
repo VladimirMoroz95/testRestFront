@@ -9,6 +9,11 @@ export default new Vuex.Store({
     goodGroups: null,
     goodsByGroup: null
   },
+  getters: {
+    goodsTree (state) {
+      return _.get(state, 'goodGroups.root', null)
+    }
+  },
   mutations: {
     setGoodGroups (state, goodGroups) {
       state.goodGroups = goodGroups
