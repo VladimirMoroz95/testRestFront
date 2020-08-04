@@ -9,6 +9,12 @@ export default new Vuex.Store({
   mutations: {
   },
   actions: {
+    async getGoodGroups () {
+      await import('../assets/files/goodgroups.json')
+        .then(data => {
+          console.log('1', data)
+        })
+    }
   },
   modules: {
   }
