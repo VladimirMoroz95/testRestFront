@@ -30,15 +30,19 @@ export default new Vuex.Store({
           const childs = {}
 
           data.forEach(item => {
-            if (item.parentKey === -1) goodGroups.root = item
-            childs[item.parentKey] = { ...childs[item.parentKey], [item.id]: item }
+            if (item.parentKey === -1) {
+              goodGroups.root = item
+            } else {
+              if (!childs[item.parentKey]) childs[item.parentKey] = []
+              childs[item.parentKey].push(item)
+            }
           })
 
           const getChilds = (key) => {
             const cell = _.get(goodGroups, key)
-            if (!cell) console.log('key', key, goodGroups)
+            if (!cell) return
             const cellId = _.get(goodGroups, key, {}).id
-            cell.childs = childs[cellId] || {}
+            cell.childs = childs[cellId] || []
 
             Object.keys(cell.childs).forEach(childKey => getChilds(`${key}.childs.${childKey}`))
           }
@@ -55,7 +59,8 @@ export default new Vuex.Store({
         .then(({ data }) => {
           const goodsByGroup = {}
           data.forEach(item => {
-            goodsByGroup[item.groupKey] = item
+            if (!goodsByGroup[item.groupKey]) goodsByGroup[item.groupKey] = []
+            goodsByGroup[item.groupKey].push(item)
           })
           commit('setGoodByGroup', goodsByGroup)
           return true

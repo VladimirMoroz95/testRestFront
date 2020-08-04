@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-tree :data="treeData" :props="defaultProps"></el-tree>
+    <el-tree
+      :data="treeData"
+      :props="defaultProps"
+      @node-click="handleNodeClick"
+      node-key="id"
+    ></el-tree>
   </div>
 </template>
 
@@ -12,6 +17,12 @@ export default {
         children: 'childs',
         label: 'name'
       }
+    }
+  },
+
+  methods: {
+    handleNodeClick (group) {
+      this.$emit('selectGroup', group.id)
     }
   },
 

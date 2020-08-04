@@ -1,17 +1,20 @@
 <template>
-  <div>
-    <Tree v-loading="loadTree" />
+  <div class="home-wrapper">
+    <GoodsTree v-loading="loadTree" @selectGroup="selectGroup" />
+    <GoodsTable :selectedGroupId="selectedGroupId" />
   </div>
 </template>
 
 <script>
 
-import Tree from '../components/Tree'
+import GoodsTree from '../components/GoodsTree'
+import GoodsTable from '../components/GoodsTable'
 
 export default {
   data () {
     return {
-      loadTree: true
+      loadTree: true,
+      selectedGroupId: null
     }
   },
 
@@ -20,12 +23,22 @@ export default {
     await this.$store.dispatch('getGoods')
   },
 
+  methods: {
+    selectGroup (selectedGroupId) {
+      this.selectedGroupId = selectedGroupId
+    }
+  },
+
   components: {
-    Tree
+    GoodsTree,
+    GoodsTable
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+  .home-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
 </style>
