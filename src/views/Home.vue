@@ -7,8 +7,9 @@
 <script>
 
 export default {
-  mounted () {
-    this.$store.dispatch('getGoodGroups')
+  async mounted () {
+    await this.$store.dispatch('getGoodGroups')
+    await this.$store.dispatch('getGoods')
   }
 }
 </script>
