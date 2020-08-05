@@ -24,6 +24,27 @@
        width="520"
      >
      </el-table-column>
+     <el-table-column align="right" width="200">
+       <template slot="header">
+         <el-input
+           v-model="search"
+           size="mini"
+           placeholder="Type to search"
+         />
+       </template>
+       <template slot-scope="scope">
+         <el-button
+           size="mini"
+           @click="editGood(scope.$index, scope.row)"
+           type="primary"
+         >Edit</el-button>
+         <el-button
+           size="mini"
+           type="danger"
+           @click="deleteGood(scope.$index, scope.row)"
+         >Delete</el-button>
+       </template>
+     </el-table-column>
    </el-table>
  </div>
 </template>
@@ -34,10 +55,23 @@ export default {
     selectedGroupId: Number
   },
 
+  data () {
+    return {
+      search: ''
+    }
+  },
+
+  methods: {
+    editGood () {
+      console.log('editGood', arguments)
+    },
+    deleteGood () {
+      console.log('deleteGood', arguments)
+    }
+  },
+
   computed: {
     goods () {
-      console.log('goods', this._.get(this.$store.state, `goodsByGroup.${this.selectedGroupId}`, []))
-      console.log('this.selectedGroupId', this.selectedGroupId)
       return this._.get(this.$store.state, `goodsByGroup.${this.selectedGroupId}`, [])
     }
   }

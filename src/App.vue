@@ -25,4 +25,8 @@
     }
   }
 }
+
+.el-button--text {
+  text-transform: uppercase;
+}
 </style>

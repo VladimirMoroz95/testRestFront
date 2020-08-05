@@ -32,6 +32,7 @@ export default new Vuex.Store({
           data.forEach(item => {
             if (item.parentKey === -1) {
               goodGroups.root = item
+              goodGroups.root.treeNode = true
             } else {
               if (!childs[item.parentKey]) childs[item.parentKey] = []
               childs[item.parentKey].push(item)
@@ -43,13 +44,10 @@ export default new Vuex.Store({
             if (!cell) return
             const cellId = _.get(goodGroups, key, {}).id
             cell.childs = childs[cellId] || []
-
             Object.keys(cell.childs).forEach(childKey => getChilds(`${key}.childs.${childKey}`))
           }
 
           getChilds('root')
-
-          console.log('1', goodGroups)
           commit('setGoodGroups', goodGroups)
           return true
         })
