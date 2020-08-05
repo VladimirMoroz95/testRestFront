@@ -1,5 +1,17 @@
 <template>
  <div>
+   <CustomDialog
+     :visible="showDeleteDialog"
+     @confirm="editGood"
+     @close="showDeleteDialog = false"
+     :loadingConfirmButton="loadingConfirmButton"
+     confirmBtnText="Delete"
+     title="Do you want"
+   >
+     <template v-slot:body>
+       <el-input />
+     </template>
+   </CustomDialog>
    <el-table
      :data="goods"
      stripe
@@ -57,13 +69,20 @@ export default {
 
   data () {
     return {
-      search: ''
+      search: '',
+      showDeleteDialog: false,
+      selectedGood: null,
+      newGoodName: ''
     }
   },
 
   methods: {
-    editGood () {
-      console.log('editGood', arguments)
+    showEditDialog (index, good) {
+      this.selectedGood = good
+      this.showDeleteDialog = true
+    },
+    editGood() {
+      this.$store.commit()
     },
     deleteGood (index, good) {
       this.$store.commit('deleteGood', good)

@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'element-ui/lib/theme-chalk/index.css'
-import { Tree, Loading, Table, TableColumn, Button } from 'element-ui'
+import { Tree, Loading, Table, TableColumn, Button, Dialog, Input } from 'element-ui'
 import _ from 'lodash'
 
 Vue.config.productionTip = false
@@ -11,6 +11,8 @@ Vue.use(Tree)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Button)
+Vue.use(Dialog)
+Vue.use(Input)
 Vue.use(Loading.directive)
 Object.defineProperty(Vue.prototype, '_', { value: _ })
 
