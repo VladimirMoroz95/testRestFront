@@ -65,8 +65,8 @@ export default {
     editGood () {
       console.log('editGood', arguments)
     },
-    deleteGood () {
-      console.log('deleteGood', arguments)
+    deleteGood (index, good) {
+      this.$store.commit('deleteGood', good)
     }
   },
 

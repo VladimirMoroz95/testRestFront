@@ -11,21 +11,21 @@
         <span class="buttons-wrapper">
           <el-button
             size="mini"
-            type="success"
-            @click="() => editGoodGroup(data)"
+            type="text"
+            @click="() => addGood(data)"
           >
             Add good
           </el-button>
           <el-button
             size="mini"
-            type="primary"
+            type="text"
             @click="() => editGoodGroup(data)"
           >
             Edit
           </el-button>
           <el-button
             size="mini"
-            type="danger"
+            type="text"
             @click="() => deleteGoodGroup(node, data)"
           >
             Delete
@@ -52,11 +52,15 @@ export default {
       this.$emit('selectGroup', group.id)
     },
 
+    addGood () {
+      console.log('addGood')
+    },
+
     editGoodGroup (data) {
       console.log('editGoodGroup', data)
     },
 
-    removeGoodGroup (node, data) {
+    deleteGoodGroup (node, data) {
       console.log('removeGoodGroup', node, data)
     }
   },

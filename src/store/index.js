@@ -20,6 +20,14 @@ export default new Vuex.Store({
     },
     setGoodByGroup (state, goodsByGroup) {
       state.goodsByGroup = goodsByGroup
+    },
+    deleteGood (state, { groupKey, id }) {
+      const goodsArray = _.get(state, `goodsByGroup.${groupKey}`, []).concat([])
+
+      _.remove(goodsArray, (good) => {
+        return good.id === id
+      })
+      state.goodsByGroup[groupKey] = goodsArray
     }
   },
   actions: {
