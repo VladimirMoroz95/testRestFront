@@ -35,9 +35,9 @@ export default {
 
   methods: {
     editGroup () {
-      const { newGoodName, group } = this
+      const { newGroupName, group } = this
 
-      this.$store.commit('editGroup', { newGoodName, groupKey: group.id })
+      this.$store.commit('editGroup', { newGroupName, groupKey: group.id })
       this.$emit('close')
     }
   },

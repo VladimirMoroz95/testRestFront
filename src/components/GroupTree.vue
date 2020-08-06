@@ -17,6 +17,7 @@
       :props="defaultProps"
       @node-click="handleNodeClick"
       node-key="treeNode"
+      empty-text="Have no groups"
     >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
@@ -38,7 +39,7 @@
           <el-button
             size="mini"
             type="text"
-            @click.stop="() => deleteGoodGroup(node, data)"
+            @click.stop="() => deleteGroup(data)"
           >
             Delete
           </el-button>
@@ -82,14 +83,14 @@ export default {
       this.showEditDialog = true
     },
 
-    deleteGoodGroup (node, data) {
-      console.log('removeGoodGroup', node, data)
+    deleteGroup (group) {
+      this.$store.commit('deleteGroup', group.id)
     }
   },
 
   computed: {
     treeData () {
-      return [this.$store.getters.goodsTree]
+      return this.$store.getters.goodsTree
     }
   },
 

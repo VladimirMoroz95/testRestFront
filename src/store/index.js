@@ -6,12 +6,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    goodGroups: null,
+    goodGroups: [],
     goodsByGroup: null
   },
   getters: {
     goodsTree (state) {
-      return _.get(state, 'goodGroups.root', null)
+      return state.goodGroups
     }
   },
   mutations: {
@@ -44,34 +44,57 @@ export default new Vuex.Store({
       } else {
         state.goodsByGroup[groupKey] = [{ id: _.random(0, 1999), groupKey, name: newGoodName }]
       }
+    },
+    editGroup (state, { newGroupName, groupKey }) {
+      const editTreeItem = (cell) => {
+        if (!cell) return
+
+        if (cell.id === groupKey) {
+          cell.name = newGroupName
+        } else if (cell.childs.length > 0) {
+          cell.childs.forEach(item => editTreeItem(item))
+        }
+      }
+
+      state.goodGroups.forEach(group => editTreeItem(group))
+    },
+    deleteGroup (state, groupId) {
+      const deleteTreeItem = (TreeItems) => {
+        if (!TreeItems) return
+        _.remove(TreeItems, item => {
+          if (item.id === groupId) return true
+
+          deleteTreeItem(item.childs)
+        })
+      }
+      deleteTreeItem(state.goodGroups)
+      state.goodGroups = state.goodGroups.concat()
     }
   },
   actions: {
     async getGoodGroups ({ commit }) {
       return await import('../assets/files/goodgroups.json')
         .then(({ data }) => {
-          const goodGroups = {}
+          const goodGroups = []
           const childs = {}
 
           data.forEach(item => {
             if (item.parentKey === -1) {
-              goodGroups.root = item
-              goodGroups.root.treeNode = true
+              goodGroups.push(item)
+              goodGroups[goodGroups.length - 1].treeNode = true
             } else {
               if (!childs[item.parentKey]) childs[item.parentKey] = []
               childs[item.parentKey].push(item)
             }
           })
 
-          const getChilds = (key) => {
-            const cell = _.get(goodGroups, key)
+          const getChilds = (cell) => {
             if (!cell) return
-            const cellId = _.get(goodGroups, key, {}).id
-            cell.childs = childs[cellId] || []
-            Object.keys(cell.childs).forEach(childKey => getChilds(`${key}.childs.${childKey}`))
+            cell.childs = childs[cell.id] || []
+            cell.childs.forEach(group => getChilds(group))
           }
 
-          getChilds('root')
+          goodGroups.forEach(group => getChilds(group))
           commit('setGoodGroups', goodGroups)
           return true
         })
