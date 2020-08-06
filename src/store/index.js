@@ -28,6 +28,15 @@ export default new Vuex.Store({
         return good.id === id
       })
       state.goodsByGroup[groupKey] = goodsArray
+    },
+    editGood (state, { selectedGood, newGoodName }) {
+      const { id, groupKey } = selectedGood
+      const goodsArray = _.get(state, `goodsByGroup.${groupKey}`, [])
+
+      state.goodsByGroup[groupKey] = _.map(goodsArray, (item) => {
+        if (item.id === id) item.name = newGoodName
+        return item
+      })
     }
   },
   actions: {

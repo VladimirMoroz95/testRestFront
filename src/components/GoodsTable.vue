@@ -1,17 +1,16 @@
 <template>
  <div>
-   <CustomDialog
+   <BaseDialog
      :visible="showDeleteDialog"
      @confirm="editGood"
      @close="showDeleteDialog = false"
-     :loadingConfirmButton="loadingConfirmButton"
-     confirmBtnText="Delete"
-     title="Do you want"
+     confirmBtnText="Edit"
+     title="Edit good"
    >
      <template v-slot:body>
-       <el-input />
+       <el-input v-model="newGoodName" />
      </template>
-   </CustomDialog>
+   </BaseDialog>
    <el-table
      :data="goods"
      stripe
@@ -47,7 +46,7 @@
        <template slot-scope="scope">
          <el-button
            size="mini"
-           @click="editGood(scope.$index, scope.row)"
+           @click="showEditDialog(scope.$index, scope.row)"
            type="primary"
          >Edit</el-button>
          <el-button
@@ -62,6 +61,8 @@
 </template>
 
 <script>
+import BaseDialog from './BaseDialog'
+
 export default {
   props: {
     selectedGroupId: Number
@@ -79,10 +80,14 @@ export default {
   methods: {
     showEditDialog (index, good) {
       this.selectedGood = good
+      this.newGoodName = good.name
       this.showDeleteDialog = true
     },
-    editGood() {
-      this.$store.commit()
+    editGood () {
+      const { newGoodName, selectedGood } = this
+
+      this.$store.commit('editGood', { selectedGood, newGoodName })
+      this.showDeleteDialog = false
     },
     deleteGood (index, good) {
       this.$store.commit('deleteGood', good)
@@ -93,6 +98,10 @@ export default {
     goods () {
       return this._.get(this.$store.state, `goodsByGroup.${this.selectedGroupId}`, [])
     }
+  },
+
+  components: {
+    BaseDialog
   }
 }
 </script>

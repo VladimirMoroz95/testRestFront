@@ -1,13 +1,11 @@
 <template>
-  <el-dialog :title="title" :visible.sync="visible">
+  <el-dialog :title="title" :visible.sync="visible" width="600px">
     <slot name="body"></slot>
     <div slot="footer" class="dialog-footer">
-      <el-button
-        @click="$emit('confirm')"
-      >
+      <el-button type="success" @click="$emit('confirm')">
         {{ confirmBtnText }}
       </el-button>
-      <el-button v-show="cancelBtn" @click="$emit('close')">Cancel</el-button>
+      <el-button type="danger" @click="$emit('close')">Cancel</el-button>
     </div>
   </el-dialog>
 </template>
