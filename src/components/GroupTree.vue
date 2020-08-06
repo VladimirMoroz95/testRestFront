@@ -85,8 +85,8 @@ export default {
     },
 
     deleteGroup (group) {
-      this.$emit('selectGroup', group.parentKey)
       this.$store.commit('deleteGroup', group.id)
+      this.$emit('selectGroup', group.parentKey)
     }
   },
 
