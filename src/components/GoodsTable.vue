@@ -1,9 +1,9 @@
 <template>
  <div>
    <BaseDialog
-     :visible="showDeleteDialog"
+     :visible="showEditDialog"
      @confirm="editGood"
-     @close="showDeleteDialog = false"
+     @close="showEditDialog = false"
      confirmBtnText="Edit"
      title="Edit good"
    >
@@ -46,7 +46,7 @@
        <template slot-scope="scope">
          <el-button
            size="mini"
-           @click="showEditDialog(scope.$index, scope.row)"
+           @click="onShowEditDialog(scope.$index, scope.row)"
            type="primary"
          >Edit</el-button>
          <el-button
@@ -71,23 +71,23 @@ export default {
   data () {
     return {
       search: '',
-      showDeleteDialog: false,
+      showEditDialog: false,
       selectedGood: null,
       newGoodName: ''
     }
   },
 
   methods: {
-    showEditDialog (index, good) {
+    onShowEditDialog (index, good) {
       this.selectedGood = good
       this.newGoodName = good.name
-      this.showDeleteDialog = true
+      this.showEditDialog = true
     },
     editGood () {
       const { newGoodName, selectedGood } = this
 
       this.$store.commit('editGood', { selectedGood, newGoodName })
-      this.showDeleteDialog = false
+      this.showEditDialog = false
     },
     deleteGood (index, good) {
       this.$store.commit('deleteGood', good)

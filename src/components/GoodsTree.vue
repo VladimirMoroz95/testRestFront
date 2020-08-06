@@ -1,5 +1,17 @@
 <template>
   <div>
+    <BaseDialog
+      :visible="showAddDialog"
+      @confirm="addGood"
+      @close="showAddDialog = false"
+      confirmBtnText="Add"
+      :title="dialogTitle"
+    >
+      <template v-slot:body>
+        <el-input v-model="newGoodName" placeholder="Enter good name" />
+      </template>
+    </BaseDialog>
+
     <el-tree
       :data="treeData"
       :props="defaultProps"
@@ -12,21 +24,21 @@
           <el-button
             size="mini"
             type="text"
-            @click="() => addGood(data)"
+            @click.stop="() => onShowAddDialog(data)"
           >
             Add good
           </el-button>
           <el-button
             size="mini"
             type="text"
-            @click="() => editGoodGroup(data)"
+            @click.stop="() => editGoodGroup(data)"
           >
             Edit
           </el-button>
           <el-button
             size="mini"
             type="text"
-            @click="() => deleteGoodGroup(node, data)"
+            @click.stop="() => deleteGoodGroup(node, data)"
           >
             Delete
           </el-button>
@@ -37,13 +49,19 @@
 </template>
 
 <script>
+import BaseDialog from './BaseDialog'
+
 export default {
   data () {
     return {
       defaultProps: {
         children: 'childs',
         label: 'name'
-      }
+      },
+      dialogTitle: '',
+      newGoodName: '',
+      selectedGroupKey: null,
+      showAddDialog: false
     }
   },
 
@@ -52,8 +70,17 @@ export default {
       this.$emit('selectGroup', group.id)
     },
 
+    onShowAddDialog (group) {
+      this.selectedGroupKey = group.id
+      this.dialogTitle = `Add good to "${group.name}" group`
+      this.showAddDialog = true
+    },
+
     addGood () {
-      console.log('addGood')
+      const { newGoodName, selectedGroupKey } = this
+
+      this.$store.commit('addGood', { newGoodName, groupKey: selectedGroupKey })
+      this.showAddDialog = false
     },
 
     editGoodGroup (data) {
@@ -69,6 +96,10 @@ export default {
     treeData () {
       return [this.$store.getters.goodsTree]
     }
+  },
+
+  components: {
+    BaseDialog
   }
 }
 </script>

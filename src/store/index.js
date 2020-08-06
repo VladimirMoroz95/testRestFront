@@ -37,6 +37,13 @@ export default new Vuex.Store({
         if (item.id === id) item.name = newGoodName
         return item
       })
+    },
+    addGood (state, { newGoodName, groupKey }) {
+      if (state.goodsByGroup[groupKey]) {
+        state.goodsByGroup[groupKey].push({ id: _.random(0, 1999), groupKey, name: newGoodName })
+      } else {
+        state.goodsByGroup[groupKey] = [{ id: _.random(0, 1999), groupKey, name: newGoodName }]
+      }
     }
   },
   actions: {
