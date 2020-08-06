@@ -1,13 +1,13 @@
 <template>
   <div class="home-wrapper">
-    <GoodsTree v-loading="loadTree" @selectGroup="selectGroup" />
+    <GroupTree v-loading="loadTree" @selectGroup="selectGroup" />
     <GoodsTable :selectedGroupId="selectedGroupId" />
   </div>
 </template>
 
 <script>
 
-import GoodsTree from '../components/GoodsTree'
+import GroupTree from '../components/GroupTree'
 import GoodsTable from '../components/GoodsTable'
 
 export default {
@@ -30,7 +30,7 @@ export default {
   },
 
   components: {
-    GoodsTree,
+    GroupTree,
     GoodsTable
   }
 }

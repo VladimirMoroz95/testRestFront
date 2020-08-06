@@ -1,16 +1,16 @@
 <template>
   <div>
-    <BaseDialog
-      :visible="showAddDialog"
-      @confirm="addGood"
+    <GoodAddDialog
       @close="showAddDialog = false"
-      confirmBtnText="Add"
-      :title="dialogTitle"
-    >
-      <template v-slot:body>
-        <el-input v-model="newGoodName" placeholder="Enter good name" />
-      </template>
-    </BaseDialog>
+      :showAddDialog="showAddDialog"
+      :dialogTitle="dialogTitle"
+      :selectedGroup="selectedGroup"
+    />
+    <GroupEditDialog
+      @close="showEditDialog = false"
+      :showEditDialog="showEditDialog"
+      :group="selectedGroup"
+    />
 
     <el-tree
       :data="treeData"
@@ -31,7 +31,7 @@
           <el-button
             size="mini"
             type="text"
-            @click.stop="() => editGoodGroup(data)"
+            @click.stop="() => onShowEditDialog(data)"
           >
             Edit
           </el-button>
@@ -49,7 +49,8 @@
 </template>
 
 <script>
-import BaseDialog from './BaseDialog'
+import GoodAddDialog from './GoodAddDialog'
+import GroupEditDialog from './GroupEditDialog'
 
 export default {
   data () {
@@ -58,10 +59,10 @@ export default {
         children: 'childs',
         label: 'name'
       },
-      dialogTitle: '',
-      newGoodName: '',
-      selectedGroupKey: null,
-      showAddDialog: false
+      showAddDialog: false,
+      showEditDialog: false,
+      selectedGroup: {},
+      dialogTitle: ''
     }
   },
 
@@ -71,20 +72,14 @@ export default {
     },
 
     onShowAddDialog (group) {
-      this.selectedGroupKey = group.id
+      this.selectedGroup = group
       this.dialogTitle = `Add good to "${group.name}" group`
       this.showAddDialog = true
     },
 
-    addGood () {
-      const { newGoodName, selectedGroupKey } = this
-
-      this.$store.commit('addGood', { newGoodName, groupKey: selectedGroupKey })
-      this.showAddDialog = false
-    },
-
-    editGoodGroup (data) {
-      console.log('editGoodGroup', data)
+    onShowEditDialog (group) {
+      this.selectedGroup = group
+      this.showEditDialog = true
     },
 
     deleteGoodGroup (node, data) {
@@ -99,7 +94,8 @@ export default {
   },
 
   components: {
-    BaseDialog
+    GoodAddDialog,
+    GroupEditDialog
   }
 }
 </script>

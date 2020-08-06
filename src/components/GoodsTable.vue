@@ -36,13 +36,6 @@
      >
      </el-table-column>
      <el-table-column align="right" width="200">
-       <template slot="header">
-         <el-input
-           v-model="search"
-           size="mini"
-           placeholder="Type to search"
-         />
-       </template>
        <template slot-scope="scope">
          <el-button
            size="mini"
