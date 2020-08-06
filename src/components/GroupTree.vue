@@ -73,6 +73,7 @@ export default {
     },
 
     onShowAddDialog (group) {
+      this.$emit('selectGroup', group.id)
       this.selectedGroup = group
       this.dialogTitle = `Add good to "${group.name}" group`
       this.showAddDialog = true
@@ -84,6 +85,7 @@ export default {
     },
 
     deleteGroup (group) {
+      this.$emit('selectGroup', group.parentKey)
       this.$store.commit('deleteGroup', group.id)
     }
   },
